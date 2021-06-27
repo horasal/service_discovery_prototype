@@ -1,0 +1,48 @@
+syntax = "proto3";
+package moonrace.discovery;
+
+message EntryList{
+    repeated Entry entries = 1;
+}
+
+// Message used to add a new entry to metastore.
+message Entry {
+    enum EntryTag {
+        service = 0;
+        storage = 1;
+        frontend = 2;
+    }
+    // can be anything
+    string entry_name = 1;
+    // Heartbeat address
+    // this is a tonic server
+    string heartbeat_url = 2;
+    // Real address that message can be routed
+    string service_url = 3;
+    // Message filter is a ACL string represents which message
+    // can be routed to service_url.
+    // Router will random pick up a service that match a message.
+    string message_filter = 4;
+    // used for tagging how this entry should be used
+    EntryTag tag = 5;
+}
+
+// Every entry added to metastore will get a unique entry id.
+message EntryId {
+    uint64 entry_id = 1;
+}
+
+message HeartbeatConfig {
+    uint64 heartbeat_interval = 1;
+    uint64 heartbeat_timeout = 2;
+}
+
+message Empty {}
+
+service Discovery {
+    rpc getConfig(Empty) returns(HeartbeatConfig);
+    rpc addEntry(Entry) returns (EntryId);
+    rpc removeEntry(EntryId) returns (EntryId);
+    rpc getEntry(EntryId) returns (Entry);
+    rpc listEntry(Empty) returns (EntryList);
+}

@@ -1,0 +1,7 @@
+syntax = "proto3";
+package moonrace.heartbeat;
+message Ping {}
+message Pong {}
+service HeartBeat {
+    rpc ping(Ping) returns (Pong);
+}

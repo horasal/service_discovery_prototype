@@ -1,0 +1,21 @@
+[package]
+name = "sigmund-client"
+version = "0.1.0"
+authors = ["idid1 <xy_cheng@126.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tonic = "0.4"
+prost = "0.7"
+tokio = { version = "1", features = ["full"]}
+futures = "0.3"
+
+tracing = "0.1"
+tracing-subscriber = "0.2"
+
+thiserror = "1"
+
+[build-dependencies]
+tonic-build = "0.4"
